@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍔 FastFood - Comandă Acum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --secondary: #f7c531;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --light: #ffffff;
+            --gray: #333333;
+            --neon-orange: #ff6b35;
+            --neon-yellow: #f7c531;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(247, 197, 49, 0.1) 0%, transparent 50%),
+                var(--darker);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+        }
+
+        .cart-btn {
+            position: relative;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            color: var(--dark);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.6);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--secondary);
+            color: var(--dark);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 20px 60px;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: #aaa;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark);
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Menu Section */
+        .menu {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 60px;
+        }
+
+        .section-title span {
+            color: var(--primary);
+        }
+
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: transparent;
+            border: 2px solid var(--gray);
+            color: var(--light);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--dark);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+        }
+
+        .menu-item-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--gray), var(--dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .menu-item-content {
+            padding: 25px;
+        }
+
+        .menu-item h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .menu-item p {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .add-btn {
+            background: var(--primary);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--dark);
+            z-index: 2000;
+            padding: 30px;
+            transition: right 0.4s ease;
+            overflow-y: auto;
+            border-left: 2px solid var(--primary);
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .cart-header h2 {
+            font-size: 1.8rem;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .cart-item-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-info span {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            background: var(--gray);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color: var(--light);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .cart-total {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gray);
+        }
+
+        .cart-total h3 {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 18px;
+            border-radius: 50px;
+            color: var(--dark);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .contact-card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-card p {
+            color: #888;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid var(--gray);
+        }
+
+        footer p {
+            color: #666;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            
+            header {
+                padding: 15px 20px;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header>
+        <div class="logo">🔥 FASTFOOD</div>
+        <button class="cart-btn" onclick="toggleCart()">
+            🛒 Coș
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Cea mai <span> gustoasă </span> mâncare</h1>
+            <p>Comandă acum și bucură-te de cele mai savuroase preparate</p>
+            <a href="#menu" class="cta-btn">Vezi Meniul →</a>
+        </div>
+    </section>
+
+    <section class="menu" id="menu">
+        <h2 class="section-title">🍔 Meniul <span>Nostru</span></h2>
+        
+        <div class="menu-categories">
+            <button class="category-btn active" onclick="filterMenu('all')">Toate</button>
+            <button class="category-btn" onclick="filterMenu('burgers')">Burger</button>
+            <button class="category-btn" onclick="filterMenu('pizza')">Pizza</button>
+            <button class="category-btn" onclick="filterMenu('shaorma')">Shaorma</button>
+            <button class="category-btn" onclick="filterMenu('bauturi')">Băuturi</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+            <!-- Menu items will be generated by JS -->
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="section-title">📞 <span>Contact</span></h2>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-card-icon">📍</div>
+                <h3>Locația</h3>
+                <p>Strada Exemplu Nr. 123<br>București, România</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-card-icon">📱</div>
+                <h3>Telefon</h>
+                <p>+40 700 000 000<br>Comenzi: 10:00 - 22:00</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-card-icon">🕐</div>
+                <h3>Program</h3>
+                <p>Luni - Duminică<br>10:00 - 22:00</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 FastFood. Toate drepturile rezervate.</p>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>🛒 Coșul tău</h2>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div id="cartItems"></div>
+        <div class="cart-total" id="cartTotal" style="display: none;">
+            <h3>Total: <span id="totalAmount">0</span> lei</h3>
+            <button class="checkout-btn" onclick="checkout()">Comandă Acum</button>
+        </div>
+    </div>
+
+    <script>
+        // Menu Data
+        const menuItems = [
+            { id: 1, name: "Classic Burger", desc: "Chiflă, carne vită, brânză, salată, sos", price: 25, category: "burgers", emoji: "🍔" },
+            { id: 2, name: "Mega Burger", desc: "2x carne, bacon, brânză, ou, legume", price: 35, category: "burgers", emoji: "🍔" },
+            { id: 3, name: "Chicken Burger", desc: "Piept de pui, legume proaspete, sos", price: 22, category: "burgers", emoji: "🍔" },
+            { id: 4, name: "Veggie Burger", desc: "Burger vegetarian cu legume", price: 20, category: "burgers", emoji: "🥬" },
+            { id: 5, name: "Margherita", desc: "Mozzarella, roșii, busuioc", price: 30, category: "pizza", emoji: "🍕" },
+            { id: 6, name: "Pepperoni", desc: "Mozzarella, pepperoni", price: 35, category: "pizza", emoji: "🍕" },
+            { id: 7, name: "Quattro Formaggi", desc: "4 tipuri de brânză", price: 38, category: "pizza", emoji: "🍕" },
+            { id: 8, name: "Shaorma Mare", desc: "Pui, cartofi, legume, sosuri", price: 28, category: "shaorma", emoji: "🌯" },
+            { id: 9, name: "Shaorma Vită", desc: "Vită, cartofi, legume, sosuri", price: 32, category: "shaorma", emoji: "🌯" },
+            { id: 10, name: "Coca Cola", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
+            { id: 11, name: "Fanta", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
+            { id: 12, name: "Sprite", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
+        ];
+
+        let cart = [];
+
+        // Render Menu
+        function renderMenu(category = 'all') {
+            const grid = document.getElementById('menuGrid');
+            grid.innerHTML = '';
+            
+            const filtered = category === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.category === category);
+            
+            filtered.forEach((item, index) => {
+                grid.innerHTML += `
+                    <div class="menu-item" style="animation-delay: ${index * 0.1}s">
+                        <div class="menu-item-image">${item.emoji}</div>
+                        <div class="menu-item-content">
+                            <h3>${item.name}</h3>
+                            <p>${item.desc}</p>
+                            <div class="menu-item-footer">
+                                <span class="price">${item.price} lei</span>
+                                <button class="add-btn" onclick="addToCart(${item.id})">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Filter Menu
+        function filterMenu(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderMenu(category);
+        }
+
+        // Cart Functions
+        function addToCart(id) {
+            const item = menuItems.find(i => i.id === id);
+            const existing = cart.find(i => i.id === id);
+            
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+            
+            updateCart();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            updateCart();
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    removeFromCart(id);
+                } else {
+                    updateCart();
+                }
+            }
+        }
+
+        function updateCart() {
+            document.getElementById('cartCount').textContent = cart.reduce((sum, i) => sum + i.qty, 0);
+            
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align:center;color:#666;margin-top:50px;">Coșul e gol 😔</p>';
+                cartTotal.style.display = 'none';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.emoji} ${item.name}</h4>
+                            <span>${item.price} lei</span>
+                        </div>
+                        <div class="cart-item-qty">
+                            <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                document.getElementById('totalAmount').textContent = total;
+                cartTotal.style.display = 'block';
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let message = "🍔 *Comandă FastFood*%0A%0A";
+            
+            cart.forEach(item => {
+                message += `${item.qty}x ${item.name} - ${item.price * item.qty} lei%0A`;
+            });
+            
+            message += `%0A*Total: ${total} lei*`;
+            
+            // Replace with your phone number
+            window.open(`https://wa.me/40000000000?text=${message}`, '_blank');
+        }
+
+        // Initialize
+        renderMenu();
+    </script>
+</body>
+</html>
