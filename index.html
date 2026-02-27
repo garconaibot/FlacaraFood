@@ -492,9 +492,14 @@
         
         <div class="menu-categories">
             <button class="category-btn active" onclick="filterMenu('all')">Toate</button>
-            <button class="category-btn" onclick="filterMenu('burgers')">Burger</button>
-            <button class="category-btn" onclick="filterMenu('pizza')">Pizza</button>
-            <button class="category-btn" onclick="filterMenu('shaorma')">Shaorma</button>
+            <button class="category-btn" onclick="filterMenu('felprincipal')">Fel Principal</button>
+            <button class="category-btn" onclick="filterMenu('ciorbe')">Ciorbe</button>
+            <button class="category-btn" onclick="filterMenu('platouri')">Platouri</button>
+            <button class="category-btn" onclick="filterMenu('meniulzilei')">Meniul Zilei</button>
+            <button class="category-btn" onclick="filterMenu('garnituri')">Garnituri</button>
+            <button class="category-btn" onclick="filterMenu('salate')">Salate</button>
+            <button class="category-btn" onclick="filterMenu('sosuri')">Sosuri</button>
+            <button class="category-btn" onclick="filterMenu('desert')">Desert</button>
             <button class="category-btn" onclick="filterMenu('bauturi')">Băuturi</button>
         </div>
 
@@ -545,18 +550,52 @@
     <script>
         // Menu Data
         const menuItems = [
-            { id: 1, name: "Classic Burger", desc: "Chiflă, carne vită, brânză, salată, sos", price: 25, category: "burgers", emoji: "🍔" },
-            { id: 2, name: "Mega Burger", desc: "2x carne, bacon, brânză, ou, legume", price: 35, category: "burgers", emoji: "🍔" },
-            { id: 3, name: "Chicken Burger", desc: "Piept de pui, legume proaspete, sos", price: 22, category: "burgers", emoji: "🍔" },
-            { id: 4, name: "Veggie Burger", desc: "Burger vegetarian cu legume", price: 20, category: "burgers", emoji: "🥬" },
-            { id: 5, name: "Margherita", desc: "Mozzarella, roșii, busuioc", price: 30, category: "pizza", emoji: "🍕" },
-            { id: 6, name: "Pepperoni", desc: "Mozzarella, pepperoni", price: 35, category: "pizza", emoji: "🍕" },
-            { id: 7, name: "Quattro Formaggi", desc: "4 tipuri de brânză", price: 38, category: "pizza", emoji: "🍕" },
-            { id: 8, name: "Shaorma Mare", desc: "Pui, cartofi, legume, sosuri", price: 28, category: "shaorma", emoji: "🌯" },
-            { id: 9, name: "Shaorma Vită", desc: "Vită, cartofi, legume, sosuri", price: 32, category: "shaorma", emoji: "🌯" },
-            { id: 10, name: "Coca Cola", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
-            { id: 11, name: "Fanta", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
-            { id: 12, name: "Sprite", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
+            // Fel Principal
+            { id: 1, name: "Piept de pui", desc: "Piept de pui la grătar cu legume", price: 35, category: "felprincipal", emoji: "🍗" },
+            { id: 2, name: "Costițe de porc", desc: "Costițe la grătar cu muștar", price: 38, category: "felprincipal", emoji: "🥓" },
+            { id: 3, name: "Friptură de vită", desc: "Friptură de vită cu sos", price: 45, category: "felprincipal", emoji: "🥩" },
+            { id: 4, name: "Snitel de pui", desc: "Snitel de pui pane", price: 28, category: "felprincipal", emoji: "🍳" },
+            
+            // Ciorbe
+            { id: 5, name: "Ciorba de burtă", desc: "Ciorbă de burtă cu smântână", price: 18, category: "ciorbe", emoji: "🥣" },
+            { id: 6, name: "Ciorba de pui", desc: "Ciorbă de pui cu legume", price: 15, category: "ciorbe", emoji: "🍲" },
+            { id: 7, name: "Ciorba de legume", desc: "Ciorbă de legume proaspete", price: 12, category: "ciorbe", emoji: "🥬" },
+            
+            // Platouri
+            { id: 8, name: "Platou Mare", desc: "Carne mixtă cu garnitură", price: 55, category: "platouri", emoji: "🍽️" },
+            { id: 9, name: "Platou Frățesc", desc: "Pentru 2 persoane", price: 80, category: "platouri", emoji: "👨‍👩‍👧‍👦" },
+            { id: 10, name: "Platou de grill", desc: "Legume și carne la grătar", price: 40, category: "platouri", emoji: "🥗" },
+            
+            // Meniul zilei
+            { id: 11, name: "Meniu ZIUA 1", desc: "Supă + Fel principal + Desert", price: 32, category: "meniulzilei", emoji: "📅" },
+            { id: 12, name: "Meniu ZIUA 2", desc: "Ciorbă + Fel principal + Băutură", price: 35, category: "meniulzilei", emoji: "📅" },
+            
+            // Garnituri
+            { id: 13, name: "Cartofi prăjiți", desc: "Cartofi prăjiți crocanți", price: 12, category: "garnituri", emoji: "🍟" },
+            { id: 14, name: "Orez", desc: "Orez basmati", price: 10, category: "garnituri", emoji: "🍚" },
+            { id: 15, name: "Piure de cartofi", desc: "Piure de cartofi cu unt", price: 10, category: "garnituri", emoji: "🥔" },
+            
+            // Salate
+            { id: 16, name: "Salată verde", desc: "Salată verde cu roșii", price: 12, category: "salate", emoji: "🥗" },
+            { id: 17, name: "Salată de varză", desc: "Varză albă cu morcov", price: 10, category: "salate", emoji: "🥬" },
+            { id: 18, name: "Salată de roșii", desc: "Roșii proaspete cu ceapă", price: 12, category: "salate", emoji: "🍅" },
+            
+            // Sosuri
+            { id: 19, name: "Sos de usturoi", desc: "Sos de usturoi", price: 5, category: "sosuri", emoji: "🧄" },
+            { id: 20, name: "Sos de roșii", desc: "Sos de roșii aromat", price: 5, category: "sosuri", emoji: "🍅" },
+            { id: 21, name: "Maioneză", desc: "Maioneză de casă", price: 5, category: "sosuri", emoji: "🥚" },
+            
+            // Desert
+            { id: 22, name: "Tort de ciocolată", desc: "Tort de ciocolată cu frișcă", price: 18, category: "desert", emoji: "🍰" },
+            { id: 23, name: "Înghețată", desc: "Înghețată cu ciocolată", price: 12, category: "desert", emoji: "🍦" },
+            { id: 24, name: "Papanas", desc: "Păpanaș cu brânză și smântână", price: 15, category: "desert", emoji: "🧇" },
+            
+            // Băuturi
+            { id: 25, name: "Coca Cola", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
+            { id: 26, name: "Fanta", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
+            { id: 27, name: "Sprite", desc: "33ml", price: 8, category: "bauturi", emoji: "🥤" },
+            { id: 28, name: "Apă minerală", desc: "500ml", price: 5, category: "bauturi", emoji: "💧" },
+            { id: 29, name: "Suc natural", desc: "Suc de fructe proaspete", price: 12, category: "bauturi", emoji: "🧃" },
         ];
 
         let cart = [];
